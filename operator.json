@@ -1,0 +1,11 @@
+{
+  "name": "TrimGalore",
+  "description": "Filter and trim fastQ reads with TrimGalore",
+  "tags": ["genomics", "transcriptomics", "rna-seq", "fastq", "QC", "trimming"],
+  "authors": ["tercen"],
+  "urls": ["https://github.com/tercen/trimgalore_docker_operator"],
+  "container": "fcadete/trimgalore_docker_operator:0.0.1",
+  "properties": [
+
+  ]
+}
