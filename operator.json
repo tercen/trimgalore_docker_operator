@@ -25,6 +25,11 @@
         "yes",
         "no"
       ]
+    },
+    {
+      "kind": "StringProperty",
+      "name": "output_folder_prefix",
+      "defaultValue": "sequence_"
     }
   
   ]
