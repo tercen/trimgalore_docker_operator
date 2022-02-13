@@ -23,8 +23,8 @@ WORKDIR /operator/trimgalore_operator
 
 RUN echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron
 
-RUN echo "22/01/2022 23:01" && git pull
-RUN echo "22/01/2022 23:01" && git checkout
+RUN echo "13/02/2022 19:30" && git pull
+RUN echo "13/02/2022 19:30" && git checkout
 
 RUN R -e "install.packages('renv')"
 RUN R -e "renv::consent(provided=TRUE);renv::restore(confirm=FALSE)"
