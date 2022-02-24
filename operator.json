@@ -4,32 +4,17 @@
   "tags": ["genomics", "transcriptomics", "rna-seq", "fastq", "QC", "trimming"],
   "authors": ["tercen"],
   "urls": ["https://github.com/tercen/trimgalore_docker_operator"],
-  "container": "fcadete/trimgalore_docker_operator:0.0.1.10",
+  "container": "fcadete/trimgalore_docker_operator:0.0.2",
   "properties": [
     {
       "kind": "EnumeratedProperty",
       "name": "paired_end",
       "defaultValue": "yes",
       "values": [
-        "yes",
-        "no"
+        "yes"
       ],
       "description": "Do the files correspond to paired-end sequencing?"
   
-    },
-    {
-      "kind": "EnumeratedProperty",
-      "name": "save_output_to_folder",
-      "defaultValue": "yes",
-      "values": [
-        "yes",
-        "no"
-      ]
-    },
-    {
-      "kind": "StringProperty",
-      "name": "output_folder_prefix",
-      "defaultValue": "sequence_"
     }
   
   ]
