@@ -3,8 +3,6 @@ library(dplyr)
 library(stringr)
 library(progressr)
 library("future.apply")
-library(processx)
-
 
 # plan(multisession) # works in R studio
 plan(multicore) ## don't work on R studio
