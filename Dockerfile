@@ -1,32 +1,22 @@
-FROM tercen/dartrusttidy:travis-17
+FROM tercen/runtime-r40:4.0.4-1
 
-RUN apt-get update
-RUN apt install -y cutadapt
+ENV RENV_VERSION 0.13.0
+RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cran.r-project.org'))"
+RUN R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
 
-RUN apt-get update
-RUN apt install -y default-jre
-RUN wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip
-RUN unzip fastqc_v0.11.9.zip
-RUN chmod 755 /FastQC/fastqc
-RUN ln -s /FastQC/fastqc /usr/local/bin/fastqc
+RUN apt update && apt install -y cutadapt default-jre && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip && \
+    unzip fastqc_v0.11.9.zip && rm fastqc_v0.11.9.zip && \
+    chmod +x /FastQC/fastqc && \
+    ln -s /FastQC/fastqc /usr/local/bin/fastqc && \
+    wget https://github.com/FelixKrueger/TrimGalore/archive/0.6.6.tar.gz && \
+    tar -xzf 0.6.6.tar.gz && rm 0.6.6.tar.gz && \
+    ln -s /TrimGalore-0.6.6/trim_galore /usr/local/bin/trim_galore
 
-RUN wget https://github.com/FelixKrueger/TrimGalore/archive/0.6.6.tar.gz
-RUN tar xzvf 0.6.6.tar.gz
-RUN ln -s /TrimGalore-0.6.6/trim_galore /usr/local/bin/trim_galore
-
-USER root
+COPY . /operator
 WORKDIR /operator
 
-RUN git clone https://github.com/tercen/trimgalore_operator.git
-
-WORKDIR /operator/trimgalore_operator
-
-RUN echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron
-
-RUN echo "04/03/2022 22:37" && git pull
-RUN echo "04/03/2022 22:37" && git checkout
-
-RUN R -e "install.packages('renv')"
 RUN R -e "renv::consent(provided=TRUE);renv::restore(confirm=FALSE)"
 
 ENTRYPOINT [ "R","--no-save","--no-restore","--no-environ","--slave","-f","main.R", "--args"]
