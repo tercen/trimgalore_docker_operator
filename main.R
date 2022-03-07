@@ -3,6 +3,8 @@ library(dplyr)
 library(stringr)
 library(progressr)
 library("future.apply")
+library(processx)
+
 
 # plan(multisession) # works in R studio
 plan(multicore) ## don't work on R studio
@@ -67,7 +69,11 @@ if (is_paired_end == "yes") {
                    "--paired",
                    r1_file, r2_file)
 
-      system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
+      exitCode = system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
+
+      if (exitCode != 0) {
+        stop("ERROR: trim_galore failed for sample: ", sample_name)
+      }
 
       progress("Trim Galore")
 
