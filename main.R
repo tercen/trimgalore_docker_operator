@@ -33,18 +33,24 @@ ctx <- tercenCtx()
 options(progressr.enable = TRUE)
 progressr::handlers(handler_tercen(ctx))
 
+input_folder <- ctx$cselect()[[1]][[1]]
+
 # Define input and output paths
-input_path <- "/var/lib/tercen/share/write/demultiplexed_fastqs"
+input_path <- paste0("/var/lib/tercen/share/write/", input_folder)
 
 if( dir.exists(input_path) == FALSE) {
-  stop("ERROR: demultiplexed_fastqs folder does not exist in project write folder.")
+  stop(paste("ERROR:", input_folder, "folder does not exist in project write folder."))
 }
 
 if (length(dir(input_path)) == 0) {
-  stop("ERROR: demultiplexed_fastqs folder is empty.")
+  stop(paste("ERROR:", input_folder, "folder is empty."))
 }
 
-output_path <- "/var/lib/tercen/share/write/trimmed_fastqs"
+output_folder <- paste0(format(Sys.time(), "%Y_%m_%d_%H_%M_%S"),
+                        "_trimmed_fastqs")
+
+output_path <- paste0("/var/lib/tercen/share/write/",
+                      output_folder, "/")
 
 is_paired_end <- as.character(ctx$op.value('paired_end'))
 
@@ -83,7 +89,7 @@ if (is_paired_end == "yes") {
 
 
 tibble(.ci = 1,
-       n_cores_detected = parallel::detectCores()) %>%
+       trimmed_folder = output_folder) %>%
   ctx$addNamespace() %>%
   ctx$save()
 
