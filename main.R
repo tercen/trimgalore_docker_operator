@@ -48,11 +48,12 @@ if( dir.exists(input_path) == FALSE) {
 
   input_path <- str_replace(input_path, "/((read)|(write))/dev", "/\\1")
 
-  }  if( dir.exists(input_path) == FALSE) {
+    if( dir.exists(input_path) == FALSE) {
 
      stop(paste("ERROR:", input_folder, "folder does not exist in project read or write folders."))
 
     }
+  }
 }
 
 if (length(dir(input_path)) == 0) {
