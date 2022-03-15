@@ -35,8 +35,10 @@ progressr::handlers(handler_tercen(ctx))
 
 input_folder <- ctx$cselect()[[1]][[1]]
 
+print(paste("This is the folder I'm looking for:", input_folder))
+
 # Check if input path is on a tercen write or read folder
-if ( !(str_starts("/var/lib/tercen/external/read/") | str_starts("/var/lib/tercen/external/write/")) ) {
+if ( !(str_starts(input_folder, "/var/lib/tercen/external/read/") | str_starts(input_folder, "/var/lib/tercen/external/write/")) ) {
   stop("Supplied path is not in a Tercen read or write folder.")
 }
 

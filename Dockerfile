@@ -14,7 +14,7 @@ RUN apt update && apt install -y cutadapt default-jre && \
     tar -xzf 0.6.6.tar.gz && rm 0.6.6.tar.gz && \
     ln -s /TrimGalore-0.6.6/trim_galore /usr/local/bin/trim_galore
 
-RUN echo "2022/03/15 22:54"
+RUN echo "2022/03/15 23:06"
 
 COPY . /operator
 WORKDIR /operator
