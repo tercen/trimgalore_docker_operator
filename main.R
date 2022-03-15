@@ -37,23 +37,22 @@ input_folder <- ctx$cselect()[[1]][[1]]
 
 print(paste("This is the folder I'm looking for:", input_folder))
 
-# Check if input path is on a tercen write or read folder
-if ( !(str_starts(input_folder, "/var/lib/tercen/external/read/") | str_starts(input_folder, "/var/lib/tercen/external/write/")) ) {
-  stop("Supplied path is not in a Tercen read or write folder.")
-}
-
 # Define input and output paths
-input_path <- str_replace(input_folder, "/var/lib/tercen/external",
-                                        "/var/lib/tercen/share")
+input_path <- paste0("/var/lib/tercen/share/write/", input_folder)
 
 if( dir.exists(input_path) == FALSE) {
-  input_path <- str_replace(input_path, "/((read)|(write))/dev", "/\\1")
+
+  input_path <- str_replace(input_path, "/write/", "/read/")
 
   if( dir.exists(input_path) == FALSE) {
 
-    stop(paste("ERROR:", input_folder, "folder does not exist in project write folder."))
+  input_path <- str_replace(input_path, "/((read)|(write))/dev", "/\\1")
 
-  }
+  }  if( dir.exists(input_path) == FALSE) {
+
+     stop(paste("ERROR:", input_folder, "folder does not exist in project read or write folders."))
+
+    }
 }
 
 if (length(dir(input_path)) == 0) {
