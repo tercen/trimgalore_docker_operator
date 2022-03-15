@@ -35,11 +35,23 @@ progressr::handlers(handler_tercen(ctx))
 
 input_folder <- ctx$cselect()[[1]][[1]]
 
+# Check if input path is on a tercen write or read folder
+if ( !(str_starts("/var/lib/tercen/external/read/") | str_starts("/var/lib/tercen/external/write/")) ) {
+  stop("Supplied path is not in a Tercen read or write folder.")
+}
+
 # Define input and output paths
-input_path <- paste0("/var/lib/tercen/share/write/", input_folder)
+input_path <- str_replace(input_folder, "/var/lib/tercen/external",
+                                        "/var/lib/tercen/share")
 
 if( dir.exists(input_path) == FALSE) {
-  stop(paste("ERROR:", input_folder, "folder does not exist in project write folder."))
+  input_path <- str_replace(input_path, "/((read)|(write))/dev", "/\\1")
+
+  if( dir.exists(input_path) == FALSE) {
+
+    stop(paste("ERROR:", input_folder, "folder does not exist in project write folder."))
+
+  }
 }
 
 if (length(dir(input_path)) == 0) {
@@ -88,7 +100,7 @@ if (is_paired_end == "yes") {
 }
 
 
-tibble(.ci = 1,
+tibble(.ci = 0,
        trimmed_folder = output_folder) %>%
   ctx$addNamespace() %>%
   ctx$save()
