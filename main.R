@@ -70,7 +70,7 @@ is_paired_end <- as.character(ctx$op.value('paired_end'))
 
 if (is_paired_end == "yes") {
 
-  r1_files <- list.files(input_path, "R1.fastq", recursive = TRUE,
+  r1_files <- list.files(input_path, "_R1.+fastq", recursive = TRUE,
                          full.names = TRUE)
 
   if (length(r1_files) == 0) stop("ERROR: No R1 FastQ files found in demultiplex_fastqs folder.")
