@@ -33,38 +33,35 @@ ctx <- tercenCtx()
 options(progressr.enable = TRUE)
 progressr::handlers(handler_tercen(ctx))
 
-input_folder <- ctx$cselect()[[1]][[1]]
+folder = ctx$cselect()[[1]][[1]]
+parts =  unlist(strsplit(folder, '/'))
+volume = parts[[1]]
+input_folder <- paste(parts[-1], collapse="/")
 
 print(paste("This is the folder I'm looking for:", input_folder))
 
 # Define input and output paths
-input_path <- paste0("/var/lib/tercen/share/write/", input_folder)
+input_path <- paste0("/var/lib/tercen/share/", volume, "/",  input_folder)
 
 if( dir.exists(input_path) == FALSE) {
 
-  input_path <- str_replace(input_path, "/write/", "/read/")
+  stop(paste("ERROR:", input_folder, "folder does not exist in project volume ", volume ))
 
-  if( dir.exists(input_path) == FALSE) {
-
-  input_path <- str_replace(input_path, "/((read)|(write))/dev", "/\\1")
-
-    if( dir.exists(input_path) == FALSE) {
-
-     stop(paste("ERROR:", input_folder, "folder does not exist in project read or write folders."))
-
-    }
-  }
 }
 
 if (length(dir(input_path)) == 0) {
-  stop(paste("ERROR:", input_folder, "folder is empty."))
+  stop(paste("ERROR:", input_folder, "folder is empty  in project volume ", volume))
 }
 
-output_folder <- paste0(format(Sys.time(), "%Y_%m_%d_%H_%M_%S"),
+output_volume = "write"
+output_folder <- paste0(output_volume, "/",
+                        format(Sys.time(), "%Y_%m_%d_%H_%M_%S"),
                         "_trimmed_fastqs")
 
-output_path <- paste0("/var/lib/tercen/share/write/",
+output_path <- paste0("/var/lib/tercen/share/",
                       output_folder, "/")
+
+system(paste("mkdir -p", output_path))
 
 is_paired_end <- as.character(ctx$op.value('paired_end'))
 

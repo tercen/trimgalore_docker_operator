@@ -13,9 +13,7 @@
       "values": [
         "yes"
       ],
-      "description": "Do the files correspond to paired-end sequencing?"
-  
+      "description": "Do the files correspond to paired-end sequencing ?"
     }
-  
   ]
 }
