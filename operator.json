@@ -4,7 +4,7 @@
   "tags": ["genomics", "transcriptomics", "rna-seq", "fastq", "QC", "trimming"],
   "authors": ["tercen"],
   "urls": ["https://github.com/tercen/trimgalore_docker_operator"],
-  "container": "fcadete/trimgalore_docker_operator:0.0.3",
+  "container": "tercen/trimgalore_docker_operator:latest",
   "properties": [
     {
       "kind": "EnumeratedProperty",
