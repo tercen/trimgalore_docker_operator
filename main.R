@@ -38,8 +38,6 @@ parts =  unlist(strsplit(folder, '/'))
 volume = parts[[1]]
 input_folder <- paste(parts[-1], collapse="/")
 
-print(paste("This is the folder I'm looking for:", input_folder))
-
 # Define input and output paths
 input_path <- paste0("/var/lib/tercen/share/", volume, "/",  input_folder)
 
