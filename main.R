@@ -126,6 +126,7 @@ if (is_paired_end == "yes") {
   })
 }
 
+print(samples)
 
 tibble(.ci = 0,
        trimmed_folder = output_folder,
