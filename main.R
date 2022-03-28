@@ -96,6 +96,8 @@ if (is_paired_end == "yes") {
 
       if (run_selected_samples & !(sample_name %in% samples_to_run)) return("NA")
 
+      print(paste("Processing", sample_name))
+
       if (rename_samples) {
         cmd <- paste("trim_galore --output_dir",
                      output_path, "--basename", new_sample_names[sample_name],
@@ -108,6 +110,8 @@ if (is_paired_end == "yes") {
                      "--paired",
                      r1_file, r2_file)
       }
+      print(cmd)
+
       exitCode = system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
 
       if (exitCode != 0) {
