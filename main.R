@@ -92,7 +92,7 @@ if (is_paired_end == "yes") {
       sample_name <- str_split(basename(r1_file),
                                "_R1.fastq")[[1]][[1]]
 
-      if (run_selected_samples & !(sample_name %in% samples_to_run)) return(NA)
+      if (run_selected_samples & !(sample_name %in% samples_to_run)) return("NA")
 
       if (rename_samples) {
         cmd <- paste("trim_galore --output_dir",
