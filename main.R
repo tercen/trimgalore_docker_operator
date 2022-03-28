@@ -61,6 +61,21 @@ output_path <- paste0("/var/lib/tercen/share/",
 
 system(paste("mkdir -p", output_path))
 
+# Check if a second column variable is used to select samples to trim
+run_selected_samples <- FALSE
+if (length(ctx$cselect()) > 1) {
+  run_selected_samples <- TRUE
+  samples_to_run <- ctx$cselect()[[2]]
+}
+
+# Check if there's a third column with new sample names
+rename_samples <- FALSE
+if (length(ctx$cselect()) > 2) {
+  rename_samples <- TRUE
+  new_sample_names <- ctx$cselect()[[3]]
+  names(new_sample_names) <- samples_to_run
+}
+
 is_paired_end <- as.character(ctx$op.value('paired_end'))
 
 if (is_paired_end == "yes") {
@@ -77,11 +92,20 @@ if (is_paired_end == "yes") {
       sample_name <- str_split(basename(r1_file),
                                "_R1.fastq")[[1]][[1]]
 
-      cmd <- paste("trim_galore --output_dir",
-                   output_path,
-                   "--paired",
-                   r1_file, r2_file)
+      if (run_selected_samples & !(sample_name %in% samples_to_run)) return(NA)
 
+      if (rename_samples) {
+        cmd <- paste("trim_galore --output_dir",
+                     output_path, "--basename", new_sample_names[sample_name],
+                     "--paired",
+                     r1_file, r2_file)
+        sample_name <- new_sample_names[sample_name]
+      } else {
+        cmd <- paste("trim_galore --output_dir",
+                     output_path,
+                     "--paired",
+                     r1_file, r2_file)
+      }
       exitCode = system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
 
       if (exitCode != 0) {
@@ -98,7 +122,8 @@ if (is_paired_end == "yes") {
 
 
 tibble(.ci = 0,
-       trimmed_folder = output_folder) %>%
+       trimmed_folder = output_folder,
+       samples = samples) %>%
   ctx$addNamespace() %>%
   ctx$save()
 
