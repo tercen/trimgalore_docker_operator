@@ -66,6 +66,7 @@ run_selected_samples <- FALSE
 if (length(ctx$cselect()) > 1) {
   run_selected_samples <- TRUE
   samples_to_run <- ctx$cselect()[[2]]
+  print(samples_to_run)
 }
 
 # Check if there's a third column with new sample names
@@ -74,6 +75,7 @@ if (length(ctx$cselect()) > 2) {
   rename_samples <- TRUE
   new_sample_names <- ctx$cselect()[[3]]
   names(new_sample_names) <- samples_to_run
+  print(new_sample_names)
 }
 
 is_paired_end <- as.character(ctx$op.value('paired_end'))
