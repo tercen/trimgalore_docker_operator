@@ -126,11 +126,11 @@ if (is_paired_end == "yes") {
   })
 }
 
-print(samples)
+print(unlist(samples))
 
 tibble(.ci = 0,
        trimmed_folder = output_folder,
-       samples = samples) %>%
+       samples = unlist(samples)) %>%
   ctx$addNamespace() %>%
   ctx$save()
 
